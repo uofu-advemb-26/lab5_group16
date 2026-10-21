@@ -32,6 +32,14 @@ pico_add_extra_outputs(sleep)
 add_custom_target(flash_sleep picotool load -f $<TARGET_FILE:sleep> DEPENDS sleep)
 
 
+add_executable(gpio_interrupt gpio_interrupt.c)
+pico_enable_stdio_uart(gpio_interrupt 0)
+pico_enable_stdio_usb(gpio_interrupt 1)
+target_link_libraries(gpio_interrupt PRIVATE pico_stdlib)
+pico_add_extra_outputs(gpio_interrupt)
+add_custom_target(flash_gpio_interrupt picotool load -f $<TARGET_FILE:gpio_interrupt> DEPENDS gpio_interrupt)
+
+
 # This is the main binary. List your C files here.
 add_executable(hello_freertos
     hello_freertos.c
