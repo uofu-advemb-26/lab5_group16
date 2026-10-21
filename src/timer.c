@@ -7,6 +7,11 @@ bool timer_callback(__unused struct repeating_timer *t)
 {
     toggle = !toggle;
     gpio_put(OUT_PIN, toggle);
+
+    for (volatile uint32_t i = 0; i < 200000; i++) {
+        __asm volatile("nop");
+    }
+
     return true;
 }
 
