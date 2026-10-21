@@ -16,9 +16,8 @@ int main(void)
         // Introduce a busy wait loop after the GPIO is toggled.
         // Busy wait sets the processor in a tight loop ( a counter loop with a noop body)
 
-        for (int i = 0; i < 100000; i++) {
-            i++;
-            i--;
+        for (volatile uint32_t i = 0; i < 200000; i++) {
+            __asm volatile("nop");
         }
 
         sleep_ms(DELAY_MS);
