@@ -9,12 +9,7 @@ void main_task(__unused void *params)
     while (1) {
         toggle = !toggle;
         gpio_put(OUT_PIN, toggle);
-
-        for (volatile uint32_t i = 0; i < 200000; i++) {
-            __asm volatile("nop");
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
+        vTaskDelay(1);
     }
 }
 
@@ -32,8 +27,9 @@ int main(void)
     TaskHandle_t task;
     xTaskCreate(main_task, "MainThread",
                 configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1UL, &task);
-    xTaskCreate(spin_task, "SpinThread1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1UL, NULL);
-    xTaskCreate(spin_task, "SpinThread2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1UL, NULL);
+    for (int i = 0; i < NUM_SPIN_TASKS; i++) {
+        xTaskCreate(spin_task, "SpinThread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1UL, NULL);
+    }
     vTaskStartScheduler();
     return 0;
 }

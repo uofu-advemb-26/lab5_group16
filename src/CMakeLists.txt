@@ -4,6 +4,8 @@ add_compile_definitions(
     OUT_PIN=7)
 
 add_executable(task_delay task_delay.c)
+# Number of equal-priority spin threads to start alongside main_task (1 or 2).
+target_compile_definitions(task_delay PRIVATE NUM_SPIN_TASKS=1)
 pico_enable_stdio_uart(task_delay 0)
 pico_enable_stdio_usb(task_delay 1)
 target_link_libraries(task_delay PRIVATE
