@@ -9,8 +9,13 @@ void main_task(__unused void *params)
     while (1) {
         toggle = !toggle;
         gpio_put(OUT_PIN, toggle);
-        vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
+        vTaskDelay(1);
     }
+}
+
+void spin_task(__unused void *params)
+{
+    while (1){}
 }
 
 int main(void)
@@ -22,6 +27,9 @@ int main(void)
     TaskHandle_t task;
     xTaskCreate(main_task, "MainThread",
                 configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1UL, &task);
+    for (int i = 0; i < NUM_SPIN_TASKS; i++) {
+        xTaskCreate(spin_task, "SpinThread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1UL, NULL);
+    }
     vTaskStartScheduler();
     return 0;
 }
