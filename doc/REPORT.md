@@ -33,6 +33,9 @@ The busy wait added directly to the latency (1.6 µs + 17.6 ms).
 
 ## Activity 3: RTOS Scheduler
 
-
+| Case | Predicted period | Predicted freq | Why |
+|---|---|---|---|
+| 1 spin thread, `vTaskDelay(1)` | 2 ms | 500 Hz | When the delayed thread wakes up we switch to it and since this toggles every 1 ms, its a period of 2ms, so 500 HZ. |
+| 2 spin threads, `vTaskDelay(1)` | 4 ms | 250 Hz | When the delayed thread wakes up we wait for the other spin threads 1 ms cycle and since this toggles every 2 ms, its a period of 4ms, so 250 HZ. |
 
 ## Comparison with Other Team
